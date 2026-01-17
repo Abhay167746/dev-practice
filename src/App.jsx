@@ -272,6 +272,7 @@ import React, { useState } from "react";
 const App = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState("none");
   const courses = [
     { id: 1, title: "React Basics", category: "Frontend" },
     { id: 2, title: "Advanced React", category: "Frontend" },
@@ -290,6 +291,16 @@ const App = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const sortedCourses = [...filteredCourses].sort((a, b) => {
+    if (sortOrder == "az") {
+      return a.title.localeCompare(b.title);
+    }
+    if (sortOrder == "za") {
+      return b.title.localeCompare(a.title);
+    }
+    return 0;
+  });
+
   // console.log(search)
   return (
     <div className="min-h-screen flex flex-col  items-center gap-4 pt-10 ">
@@ -300,6 +311,7 @@ const App = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+
       <button
         onClick={() => setSearch("")}
         className="mt-4 px-2 py-1 border rounded cursor-pointer"
@@ -319,15 +331,25 @@ const App = () => {
         <option value="Programming">Programming</option>
       </select>
 
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        className="border rounded px-2 py-1 cursor-pointer  "
+      >
+        <option value="none">No Sorting</option>
+        <option value="az">Title A to Z</option>
+        <option value="za">Title Z to A</option>
+      </select>
+
       <p className="text-sm text-grey-600">
         Showing {filteredCourses.length} courses
       </p>
 
       <div className="mt-4">
-        {filteredCourses.length === 0 ? (
+        {sortedCourses.length === 0 ? (
           <p>No courses found</p>
         ) : (
-          filteredCourses.map((course, index) => (
+          sortedCourses.map((course) => (
             <p key={course.id} className="mb-2">
               {course.title}
             </p>
