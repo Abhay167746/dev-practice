@@ -274,11 +274,11 @@ const App = () => {
   const [category, setCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("none");
   const courses = [
-    { id: 1, title: "React Basics", category: "Frontend" },
-    { id: 2, title: "Advanced React", category: "Frontend" },
-    { id: 3, title: "Node.js Backend", category: "Backend" },
-    { id: 4, title: "Full Stack Web", category: "Full Stack" },
-    { id: 5, title: "DSA with C++", category: "Programming" },
+    { id: 1, title: "React Basics", category: "Frontend", price: 0 },
+    { id: 2, title: "Advanced React", category: "Frontend", price: 999 },
+    { id: 3, title: "Node.js Backend", category: "Backend", price: 799 },
+    { id: 4, title: "Full Stack Web", category: "Full Stack", price: 1499 },
+    { id: 5, title: "DSA with C++", category: "Programming", price: 0 },
   ];
 
   const filteredCourses = courses.filter((course) => {
@@ -350,9 +350,19 @@ const App = () => {
           <p>No courses found</p>
         ) : (
           sortedCourses.map((course) => (
-            <p key={course.id} className="mb-2">
-              {course.title}
-            </p>
+            <div key={course.id} className="mb-2 flex gap-2 items-center">
+              <span>{course.title}</span>
+
+              {course.price === 0 ? (
+                <span className="text-xs px-2 py-0.5 bg-green-200 text-green-800 rounded ">
+                  FREE
+                </span>
+              ) : (
+                <span className="text-xs px-2 py-0.5 bg-blue-200 text-blue-800 rounded">
+                  PAID
+                </span>
+              )}
+            </div>
           ))
         )}
       </div>
