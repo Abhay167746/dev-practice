@@ -303,7 +303,9 @@ const App = () => {
 
   // console.log(search)
   return (
-    <div className="min-h-screen flex flex-col  items-center gap-4 pt-10 ">
+    <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
+      <div className="border px-6 py-6 mb-8 rounded-lg bg-white shadow w-full max-w-xl">
+      <div className=" flex flex-col  items-center gap-4 pt-10 ">
       <input
         className="border px-4 py-2 rounded-lg"
         type="text"
@@ -366,6 +368,8 @@ const App = () => {
           ))
         )}
       </div>
+    </div>
+    </div>
     </div>
   );
 };
