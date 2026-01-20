@@ -268,6 +268,7 @@
 // export default App
 
 import React, { useState } from "react";
+import CourseList from "./components/CourseList";
 
 const App = () => {
   const [search, setSearch] = useState("");
@@ -346,28 +347,7 @@ const App = () => {
       <p className="text-sm text-grey-600">
         Showing {filteredCourses.length} courses
       </p>
-
-      <div className="mt-4">
-        {sortedCourses.length === 0 ? (
-          <p>No courses found</p>
-        ) : (
-          sortedCourses.map((course) => (
-            <div key={course.id} className="mb-2 flex gap-2 items-center">
-              <span>{course.title}</span>
-
-              {course.price === 0 ? (
-                <span className="text-xs px-2 py-0.5 bg-green-200 text-green-800 rounded ">
-                  FREE
-                </span>
-              ) : (
-                <span className="text-xs px-2 py-0.5 bg-blue-200 text-blue-800 rounded">
-                  PAID
-                </span>
-              )}
-            </div>
-          ))
-        )}
-      </div>
+      <CourseList courses={sortedCourses}/>
     </div>
     </div>
     </div>
