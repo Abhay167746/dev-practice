@@ -302,7 +302,7 @@ const App = () => {
     return 0;
   });
 
-  // console.log(search)
+  
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
       <div className="border px-6 py-6 mb-8 rounded-lg bg-white shadow w-full max-w-xl">
@@ -347,7 +347,7 @@ const App = () => {
       <p className="text-sm text-grey-600">
         Showing {filteredCourses.length} courses
       </p>
-      <CourseList courses={sortedCourses}/>
+      <CourseList courses={sortedCourses} title="Available Courses"/>
     </div>
     </div>
     </div>
