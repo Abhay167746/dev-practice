@@ -267,7 +267,7 @@
 
 // export default App
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseList from "./components/CourseList";
 import SearchBar from "./components/SearchBar";
 
@@ -275,6 +275,8 @@ const App = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("none");
+  const [debouncedSearch, setDebouncedSearch]= useState(search);
+
   const courses = [
     { id: 1, title: "React Basics", category: "Frontend", price: 0 },
     { id: 2, title: "Advanced React", category: "Frontend", price: 999 },
@@ -286,7 +288,7 @@ const App = () => {
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title
       .toLowerCase()
-      .includes(search.toLowerCase());
+      .includes(debouncedSearch.toLowerCase());
 
     const matchesCategory = category === "All" || course.category === category;
 
@@ -302,6 +304,13 @@ const App = () => {
     }
     return 0;
   });
+
+  useEffect(()=>{
+    const timer = setTimeout(()=>{
+      setDebouncedSearch(search);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
