@@ -276,14 +276,15 @@ const App = () => {
   const [category, setCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("none");
   const [debouncedSearch, setDebouncedSearch]= useState(search);
+  const [courses, setCourses] = useState([]);
 
-  const courses = [
-    { id: 1, title: "React Basics", category: "Frontend", price: 0 },
-    { id: 2, title: "Advanced React", category: "Frontend", price: 999 },
-    { id: 3, title: "Node.js Backend", category: "Backend", price: 799 },
-    { id: 4, title: "Full Stack Web", category: "Full Stack", price: 1499 },
-    { id: 5, title: "DSA with C++", category: "Programming", price: 0 },
-  ];
+  // const courses = [
+  //   { id: 1, title: "React Basics", category: "Frontend", price: 0 },
+  //   { id: 2, title: "Advanced React", category: "Frontend", price: 999 },
+  //   { id: 3, title: "Node.js Backend", category: "Backend", price: 799 },
+  //   { id: 4, title: "Full Stack Web", category: "Full Stack", price: 1499 },
+  //   { id: 5, title: "DSA with C++", category: "Programming", price: 0 },
+  // ];
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title
@@ -308,9 +309,24 @@ const App = () => {
   useEffect(()=>{
     const timer = setTimeout(()=>{
       setDebouncedSearch(search);
-    }, 3000);
+    }, 300);
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(()=>{
+    fetch("https://dummyjson.com/products")
+    .then((res)=>res.json())
+    .then((data)=>{
+      const formattedCourses = data.products.slice(0,5).map((item)=>({
+        id:item.id,
+        title:item.title,
+        category: item.category,
+        price:item.price,
+      }));
+      setCourses(formattedCourses);
+
+    });
+  }, [])
 
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
