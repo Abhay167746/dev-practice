@@ -280,14 +280,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // const courses = [
-  //   { id: 1, title: "React Basics", category: "Frontend", price: 0 },
-  //   { id: 2, title: "Advanced React", category: "Frontend", price: 999 },
-  //   { id: 3, title: "Node.js Backend", category: "Backend", price: 799 },
-  //   { id: 4, title: "Full Stack Web", category: "Full Stack", price: 1499 },
-  //   { id: 5, title: "DSA with C++", category: "Programming", price: 0 },
-  // ];
-
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title
       .toLowerCase()
@@ -316,30 +308,37 @@ const App = () => {
   }, [search]);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://dummyjson.com/products")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch data");
-        }
-       return res.json();
-      })
+  const fetchCourses = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-      .then((data) => {
-        const formattedCourses = data.products.slice(0,5).map((item) => ({
-          id: item.id,
-          title: item.title,
-          category: item.category,
-          price: item.price,
-        }));
-        setCourses(formattedCourses);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+      const res = await fetch("https://dummyjson.com/products");
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await res.json();
+
+      const formattedCourses = data.products.slice(0, 5).map((item) => ({
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        price: item.price,
+      }));
+
+      setCourses(formattedCourses);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCourses();
+}, []);
+
 
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
