@@ -275,8 +275,10 @@ const App = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("none");
-  const [debouncedSearch, setDebouncedSearch]= useState(search);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // const courses = [
   //   { id: 1, title: "React Basics", category: "Frontend", price: 0 },
@@ -306,69 +308,85 @@ const App = () => {
     return 0;
   });
 
-  useEffect(()=>{
-    const timer = setTimeout(()=>{
+  useEffect(() => {
+    const timer = setTimeout(() => {
       setDebouncedSearch(search);
     }, 300);
     return () => clearTimeout(timer);
   }, [search]);
 
-  useEffect(()=>{
+  useEffect(() => {
+    setLoading(true);
     fetch("https://dummyjson.com/products")
-    .then((res)=>res.json())
-    .then((data)=>{
-      const formattedCourses = data.products.slice(0,5).map((item)=>({
-        id:item.id,
-        title:item.title,
-        category: item.category,
-        price:item.price,
-      }));
-      setCourses(formattedCourses);
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+       return res.json();
+      })
 
-    });
-  }, [])
+      .then((data) => {
+        const formattedCourses = data.products.slice(0,5).map((item) => ({
+          id: item.id,
+          title: item.title,
+          category: item.category,
+          price: item.price,
+        }));
+        setCourses(formattedCourses);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-600 ">
       <div className="border px-6 py-6 mb-8 rounded-lg bg-white shadow w-full max-w-xl">
-      <div className=" flex flex-col  items-center gap-4 pt-10 ">
-         <SearchBar search={search} setSearch={setSearch} />
-      <button
-        onClick={() => setSearch("")}
-        className="mt-4 px-2 py-1 border rounded cursor-pointer"
-      >
-        Reset
-      </button>
+        <div className=" flex flex-col  items-center gap-4 pt-10 ">
+          <SearchBar search={search} setSearch={setSearch} />
+          <button
+            onClick={() => setSearch("")}
+            className="mt-4 px-2 py-1 border rounded cursor-pointer"
+          >
+            Reset
+          </button>
 
-      <select
-        className="border px-2 py-1 rounded cursor-pointer"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="All">All</option>
-        <option value="Frontend">Frontend</option>
-        <option value="Backend">Backend</option>
-        <option value="Full Stack">Full Stack</option>
-        <option value="Programming">Programming</option>
-      </select>
+          <select
+            className="border px-2 py-1 rounded cursor-pointer"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="Full Stack">Full Stack</option>
+            <option value="Programming">Programming</option>
+          </select>
 
-      <select
-        value={sortOrder}
-        onChange={(e) => setSortOrder(e.target.value)}
-        className="border rounded px-2 py-1 cursor-pointer  "
-      >
-        <option value="none">No Sorting</option>
-        <option value="az">Title A to Z</option>
-        <option value="za">Title Z to A</option>
-      </select>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="border rounded px-2 py-1 cursor-pointer  "
+          >
+            <option value="none">No Sorting</option>
+            <option value="az">Title A to Z</option>
+            <option value="za">Title Z to A</option>
+          </select>
 
-      <p className="text-sm text-grey-600">
-        Showing {filteredCourses.length} courses
-      </p>
-     
-      <CourseList courses={sortedCourses} title="Available Courses"/>
-    </div>
-    </div>
+          <p className="text-sm text-grey-600">
+            Showing {filteredCourses.length} courses
+          </p>
+
+          {loading && <p>Loading courses...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+
+          {!loading && !error && (
+            <CourseList courses={sortedCourses} title="Available Courses" />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
