@@ -4,7 +4,7 @@ const CourseList = ({ courses, title }) => {
   }
 
   return (
-    <div className="mt-4 border rounded-2xl px-5 py-3">
+    <div className="mt-4 border rounded-2xl px-6 py-3">
       {title && <h2 className="font-bold mb-2">{title}</h2>}
       {courses.map((course) => (
         <div key={course.id} className="mb-2 flex gap-2 items-center">
