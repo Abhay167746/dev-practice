@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const CourseList = ({ courses, title }) => {
   if (!courses || courses.length === 0) {
     return <p>No courses found</p>;
@@ -8,7 +9,13 @@ const CourseList = ({ courses, title }) => {
       {title && <h2 className="font-bold mb-2">{title}</h2>}
       {courses.map((course) => (
         <div key={course.id} className="mb-2 flex gap-2 items-center">
-          <span>{course.title}</span>
+          <Link 
+          to={`/courses/${courses.id}`}
+          className="text-blue-600 hover:underline"
+          >
+          {course.title}
+          </Link>
+         
           {course.price === 0 ? (
             <span className="text-xs px-2 py-0.5 bg-green-200 text-green-800 rounded">
               FREE
