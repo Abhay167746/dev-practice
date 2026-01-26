@@ -398,6 +398,7 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Navbar from "./components/Navbar";
 import CourseList from "./components/CourseList";
+import CourseDetails from "./pages/CourseDetails";
 
 const App = () => {
   return (
@@ -407,6 +408,8 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/courses" element={<Courses/>}/>
       <Route path="/courses/:id" element={<CourseList />} />
+      <Route path="/courses/:id" element={<CourseDetails />} />
+
     </Routes>
    </>
   );
