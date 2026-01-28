@@ -1,12 +1,13 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const CourseDetails = () => {
-  const { id } = useParams();          // get course id from URL
+  const { id } = useParams(); // get course id from URL
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -51,23 +52,20 @@ const CourseDetails = () => {
   return (
     <div className="min-h-screen flex justify-center pt-10 bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow w-full max-w-md">
-        
         <h1 className="text-2xl font-bold mb-2">{course.title}</h1>
 
-        <p className="text-gray-600 mb-2">
-          Category: {course.category}
-        </p>
+        <p className="text-gray-600 mb-2">Category: {course.category}</p>
 
         <p className="font-semibold mb-4">
           Price: {course.price === 0 ? "FREE" : `₹${course.price}`}
         </p>
 
-        <Link
-          to="/courses"
-          className="text-blue-600 hover:underline"
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-4 text-blue-600 hover:underline"
         >
           ← Back to Courses
-        </Link>
+        </button>
       </div>
     </div>
   );
