@@ -1,28 +1,56 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const CourseDetails = () => {
   const { id } = useParams(); // get course id from URL
 
-  const [course, setCourse] = useState(null);
+  // const [course, setCourse] = useState(null);
+  const [course, setCourse] = useState(passedCourse || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const passedCourse = location.state?.course;
+
+  // useEffect(() => {
+  //   const fetchCourse = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
+
+  //       const res = await fetch(`https://dummyjson.com/products/${id}`);
+  //       if (!res.ok) {
+  //         throw new Error("Failed to fetch course");
+  //       }
+
+  //       const data = await res.json();
+
+  //       // format course same as Courses.jsx
+  //       setCourse({
+  //         id: data.id,
+  //         title: data.title,
+  //         category: data.category,
+  //         price: data.price,
+  //       });
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchCourse();
+  // }, [id]);
 
   useEffect(() => {
+    if (passedCourse) return; // already have data
+
     const fetchCourse = async () => {
       try {
         setLoading(true);
-        setError(null);
-
         const res = await fetch(`https://dummyjson.com/products/${id}`);
-        if (!res.ok) {
-          throw new Error("Failed to fetch course");
-        }
-
         const data = await res.json();
 
-        // format course same as Courses.jsx
         setCourse({
           id: data.id,
           title: data.title,
@@ -37,7 +65,7 @@ const CourseDetails = () => {
     };
 
     fetchCourse();
-  }, [id]);
+  }, [id, passedCourse]);
 
   // Loading state
   if (loading) {
