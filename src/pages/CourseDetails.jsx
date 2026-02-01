@@ -12,38 +12,9 @@ const CourseDetails = () => {
   const location = useLocation();
   const passedCourse = location.state?.course;
 
-  // useEffect(() => {
-  //   const fetchCourse = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-
-  //       const res = await fetch(`https://dummyjson.com/products/${id}`);
-  //       if (!res.ok) {
-  //         throw new Error("Failed to fetch course");
-  //       }
-
-  //       const data = await res.json();
-
-  //       // format course same as Courses.jsx
-  //       setCourse({
-  //         id: data.id,
-  //         title: data.title,
-  //         category: data.category,
-  //         price: data.price,
-  //       });
-  //     } catch (err) {
-  //       setError(err.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchCourse();
-  // }, [id]);
-
+ 
   useEffect(() => {
-    if (passedCourse) return; // already have data
+    if (passedCourse) return; 
 
     const fetchCourse = async () => {
       try {
@@ -74,7 +45,7 @@ const CourseDetails = () => {
 
   // Error state
   if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
+    return <p className="text-center text-red-600">{error}</p>;
   }
 
   return (
