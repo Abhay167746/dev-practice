@@ -11,10 +11,9 @@ const CourseDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const passedCourse = location.state?.course;
-
  
   useEffect(() => {
-    if (passedCourse) return; 
+    if (passedCourse) return;
 
     const fetchCourse = async () => {
       try {
@@ -45,7 +44,7 @@ const CourseDetails = () => {
 
   // Error state
   if (error) {
-    return <p className="text-center text-red-600">{error}</p>;
+    return <p className="text-center text-red-500">{error}</p>;
   }
 
   return (
