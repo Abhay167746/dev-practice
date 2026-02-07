@@ -44,7 +44,7 @@ const CourseDetails = () => {
 
   // Error state
   if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
+    return <p className="text-center text-red-600">{error}</p>;
   }
 
   return (
